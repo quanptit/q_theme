@@ -49,7 +49,7 @@ class AppThemeData {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ThemeMode themeModeSaved = await ThemeUtils.getCurrentSavedThemeMode();
+  ThemeMode themeModeSaved = await await T.getCurrentSavedThemeMode();
 
   await initializationTest();
 
@@ -80,10 +80,10 @@ darkTheme: sử dụng khi set themeMode = dart
 */
 ```
 
-### Sử dụng `ThemeUtils.get..` để lấy color, hoặc bất cứ thông tin gì của theme
+### Sử dụng `T.get..` để lấy color, hoặc bất cứ thông tin gì của theme
 
 ### Thêm Widget thay đổi theme ở bất cứ đâu (Left menu).
-
+bên dưới trả về 2 controler viết sẵn UI thay đối Theme cho ứng dụng.
 `ThemeModeSwitchDrawerMenuItem()`
 
 `ThemeModeSwitch()`
