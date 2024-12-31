@@ -1,45 +1,67 @@
-### Khai báo themeData trong ứng dụng
+### Import
+```
+  q_theme:
+    path: ./external_libs/q_theme
+  flex_color_scheme: ^8.0.2
+```
+
+### Khai báo AppTheme trong ứng dụng
+Vào trang của lib flex_color_scheme để chọn theme phù hợp sẽ có code mục "Theme Code".  copy code này.
+
+app_theme.dart <file config theme. lay tu flex_color_scheme>
 ```dart
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:q_theme/flex_scheme_data.dart';
-import 'package:q_theme/flex_theme_data.dart';
-
-
-class AppThemeData {
-  static const Color materialLightErrorHc = Color(0xff790000);
-  static const Color materialDarkErrorHc = Color(0xff9b374d);
-  static const Color materialDarkError = Color(0xFFCF6679);
-
-  static const FlexSchemeData mandyRed = FlexSchemeData(
-    name: 'Oh Mandy red',
-    description: 'Mandy red and Viking blue inspired red theme',
-    light: FlexSchemeColor(
-      primary: Color(0xFFCD5758),
-      primaryContainer: Color(0xFFE49797),
-      secondary: Color(0xFF57C8D3),
-      secondaryContainer: Color(0xFF90F2FC),
-      tertiary: Color(0xFF69B9CD),
-      tertiaryContainer: Color(0xFFA6EDFF),
-      error: materialLightErrorHc,
+/// The [AppTheme] defines light and dark themes for the app.
+///
+/// Theme setup for FlexColorScheme package v8.
+/// Use same major flex_color_scheme package version. If you use a
+/// lower minor version, some properties may not be supported.
+/// In that case, remove them after copying this theme to your
+/// app or upgrade package to version 8.0.2.
+///
+/// Use in [MaterialApp] like this:
+///
+/// MaterialApp(
+///  theme: AppTheme.light,
+///  darkTheme: AppTheme.dark,
+///  :
+/// );
+sealed class AppTheme {
+  // The defined light theme.
+  static ThemeData light = FlexThemeData.light(
+    scheme: FlexScheme.hippieBlue,
+    subThemesData: const FlexSubThemesData(
+      interactionEffects: true,
+      tintedDisabledControls: true,
+      useM2StyleDividerInM3: true,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      alignedDropdown: true,
+      navigationRailUseIndicator: true,
+      navigationRailLabelType: NavigationRailLabelType.all,
     ),
-    dark: FlexSchemeColor(
-      primary: Color(0xFFDA8585),
-      primaryContainer: Color(0xFFC05253),
-      secondary: Color(0xFF68CDD7),
-      secondaryContainer: Color(0xFF037481),
-      tertiary: Color(0xFF85C6D6),
-      tertiaryContainer: Color(0xFF21859E),
-      error: materialDarkError,
-    ),
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
   );
-
-  static ThemeData getDarkTheme() {
-    return FlexThemeData.dark(mandyRed);
-  }
-
-  static ThemeData getLightTheme() {
-    return FlexThemeData.light(mandyRed);
-  }
+  // The defined dark theme.
+  static ThemeData dark = FlexThemeData.dark(
+    scheme: FlexScheme.hippieBlue,
+    subThemesData: const FlexSubThemesData(
+      interactionEffects: true,
+      tintedDisabledControls: true,
+      blendOnColors: true,
+      useM2StyleDividerInM3: true,
+      inputDecoratorIsFilled: true,
+      inputDecoratorBorderType: FlexInputBorderType.outline,
+      alignedDropdown: true,
+      navigationRailUseIndicator: true,
+      navigationRailLabelType: NavigationRailLabelType.all,
+    ),
+    visualDensity: FlexColorScheme.comfortablePlatformDensity,
+    cupertinoOverrideTheme: const CupertinoThemeData(applyThemeToAll: true),
+  );
 }
 
 ```
@@ -47,37 +69,37 @@ class AppThemeData {
 ### đưa THEME vào MaterialApp ở Main.dart
 ```dart
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  ThemeMode themeModeSaved = await await T.getCurrentSavedThemeMode();
-
-  await initializationTest();
-
-  runApp(ChangeNotifierProvider<AppThemeModel>(
-    create: (_) => AppThemeModel(themeModeSaved),
-    child: const App(),
-  ));
+registerDependencies() async {
+  final getIt = GetIt.instance;
+  getIt.registerSingletonAsync<AppThemeControler>(() => AppThemeControler().init());
+  await getIt.allReady();
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+void main() async {
+  MainUtils.firstBaseSettingForMain();
+  await registerDependencies();
+  ...........
 
+}
+
+
+class App extends ConsumerWidget {
+  const App({super.key});
+
+  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    debugPrint('Build App');
-    const FlexSchemeData usedScheme = AppThemeData.mandyRed;
-    return MaterialApp(
-      theme: FlexThemeData.light(usedScheme),
-      darkTheme: FlexThemeData.dark(usedScheme),
-      themeMode: ThemeUtils.getThemeMode(context),
-      .
-      .
-      .
-      .
-/*
-theme: CÁi sẽ sử dụng nếu themeMode không xác định là dart.
-darkTheme: sử dụng khi set themeMode = dart
-*/
+  Widget build(BuildContext context, ref) {
+    return MaterialApp.router(
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      scaffoldMessengerKey: snackbarKey,
+      themeMode: ref.watch(appThemeNotifierProvider).themeModeSaved,
+      routerConfig: AppRoutes.router,
+    );
+  }
+}
+
+
 ```
 
 ### Sử dụng `T.get..` để lấy color, hoặc bất cứ thông tin gì của theme

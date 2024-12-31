@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import 'app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:q_theme/q_theme.dart';
 
 class ThemeModeSwitchDrawerMenuItem extends StatelessWidget {
-  const ThemeModeSwitchDrawerMenuItem({Key? key}) : super(key: key);
+  const ThemeModeSwitchDrawerMenuItem({super.key});
+
   @override
   Widget build(BuildContext context) {
     return const ListTile(
@@ -15,30 +15,37 @@ class ThemeModeSwitchDrawerMenuItem extends StatelessWidget {
   }
 }
 
-class ThemeModeSwitch extends StatelessWidget {
-  const ThemeModeSwitch({Key? key}) : super(key: key);
+class ThemeModeSwitch extends ConsumerWidget {
+  const ThemeModeSwitch({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Consumer<AppThemeModel>(builder: (context, appThemeModel, child) {
-      var isDark = (Theme.of(context).brightness == Brightness.dark);
-      final List<bool> isSelected = <bool>[!isDark, isDark];
-      return ToggleButtons(
-        isSelected: isSelected,
-        onPressed: (int newIndex) {
-          debugPrint('newIndex: $newIndex');
-          if (newIndex == 0) {
-            appThemeModel.themeMode = ThemeMode.light;
-          } else {
-            appThemeModel.themeMode = ThemeMode.dark;
-          }
-        },
-        children: const <Widget>[
-          Icon(Icons.light_mode),
-          // Icon(Icons.phone_iphone),
-          Icon(Icons.bedtime),
-        ],
-      );
-    });
+  Widget build(BuildContext context, ref) {
+    var isDark = (Theme.of(context).brightness == Brightness.dark);
+    final List<bool> isSelected = <bool>[!isDark, isDark];
+    return ToggleButtons(
+      isSelected: isSelected,
+      onPressed: (int newIndex) {
+        debugPrint('newIndex: $newIndex');
+        if (newIndex == 0) {
+          ref
+              .watch(appThemeNotifierProvider.notifier)
+              .changeThemeMode(ThemeMode.light);
+        } else {
+          ref
+              .watch(appThemeNotifierProvider.notifier)
+              .changeThemeMode(ThemeMode.dark);
+        }
+      },
+      children: const <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 8, right: 8),
+          child: Icon(Icons.light_mode),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 8, right: 8),
+          child: Icon(Icons.bedtime),
+        ),
+      ],
+    );
   }
 }

@@ -6,10 +6,11 @@ environment:
   sdk: ^3.5.4
 
 dependencies:
-  provider: any
   q_common_utils:
     path: ../q_common_utils
-
+  flutter_riverpod: any
+  get_it: any
+  riverpod_annotation: any
   flutter:
     sdk: flutter
 
@@ -17,6 +18,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  riverpod_generator: ^2.6.1
+  riverpod_lint: ^2.6.1
+  build_runner: ^2.4.14
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

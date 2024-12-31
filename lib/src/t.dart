@@ -1,22 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:q_common_utils/preferences_utils.dart';
-
-class AppThemeModel extends ChangeNotifier {
-  ThemeMode _themeMode;
-
-  set themeMode(ThemeMode newValue) {
-    if (newValue == _themeMode) return;
-    debugPrint('set themeMode: $newValue');
-    _themeMode = newValue;
-    T.saveCurrentThemeMode(_themeMode);
-    notifyListeners();
-  }
-
-  ThemeMode get themeMode => _themeMode;
-
-  AppThemeModel(this._themeMode);
-}
 
 class T {
   static const keySaved = "theme_s";
@@ -35,9 +18,9 @@ class T {
     return PreferencesUtils.saveInt(keySaved, themeMode.index);
   }
 
-  static ThemeMode getThemeMode(BuildContext context) {
-    return Provider.of<AppThemeModel>(context)._themeMode;
-  }
+  // static ThemeMode getThemeMode(BuildContext context) {
+  //   return Provider.of<AppThemeModel>(context)._themeMode;
+  // }
 
   static ThemeData getTheme(BuildContext context) {
     return Theme.of(context);
