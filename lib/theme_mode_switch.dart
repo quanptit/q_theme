@@ -27,13 +27,9 @@ class ThemeModeSwitch extends ConsumerWidget {
       onPressed: (int newIndex) {
         debugPrint('newIndex: $newIndex');
         if (newIndex == 0) {
-          ref
-              .watch(appThemeNotifierProvider.notifier)
-              .changeThemeMode(ThemeMode.light);
+          ref.read(themeViewModelProvider.notifier).updateThemeMode(ThemeMode.light);
         } else {
-          ref
-              .watch(appThemeNotifierProvider.notifier)
-              .changeThemeMode(ThemeMode.dark);
+          ref.read(themeViewModelProvider.notifier).updateThemeMode(ThemeMode.dark);
         }
       },
       children: const <Widget>[
