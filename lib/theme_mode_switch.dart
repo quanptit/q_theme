@@ -25,7 +25,6 @@ class ThemeModeSwitch extends ConsumerWidget {
     return ToggleButtons(
       isSelected: isSelected,
       onPressed: (int newIndex) {
-        debugPrint('newIndex: $newIndex');
         if (newIndex == 0) {
           ref.read(themeViewModelProvider.notifier).updateThemeMode(ThemeMode.light);
         } else {
@@ -34,11 +33,11 @@ class ThemeModeSwitch extends ConsumerWidget {
       },
       children: const <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 8, right: 8),
+          padding: EdgeInsets.only(left: 16, right: 16),
           child: Icon(Icons.light_mode),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 8, right: 8),
+          padding: EdgeInsets.only(left: 16, right: 16),
           child: Icon(Icons.bedtime),
         ),
       ],
