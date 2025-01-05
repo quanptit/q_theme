@@ -26,4 +26,6 @@ class T {
     ThemeData themeData = Theme.of(context);
     return themeData.textTheme.labelSmall?.copyWith(color: themeData.colorScheme.primary);
   }
+
+  T._();
 }
