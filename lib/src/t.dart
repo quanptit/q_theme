@@ -4,9 +4,12 @@ class T {
   // static ThemeMode getThemeMode(BuildContext context) {
   //   return Provider.of<AppThemeModel>(context)._themeMode;
   // }
-
   static ThemeData getTheme(BuildContext context) {
     return Theme.of(context);
+  }
+
+  static bool isDark(BuildContext context){
+    return (Theme.of(context).brightness == Brightness.dark);
   }
 
   static ColorScheme getColors(BuildContext context) {
